@@ -1,0 +1,36 @@
+server:
+  port: 8080
+
+spring:
+  cloud:
+    gateway:
+      server:
+        webflux:
+          routes:
+            - id: product-service
+              uri: lb://PRODUCT-SERVICE
+              predicates:
+                - Path=/api/products/**
+
+            - id: order-management-service
+              uri: lb://ORDER-MANAGEMENT-SERVICE
+              predicates:
+                - Path=/api/orders/**
+
+            - id: auth-service
+              uri: lb://AUTH-SERVICE
+              predicates:
+                - Path=/auth/**
+
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          secret-key: X9kP2vLm8QwRtYz12345JwtSecretKeySecure2026HSPXXxxghtf
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
+  instance:
+    prefer-ip-address: true
